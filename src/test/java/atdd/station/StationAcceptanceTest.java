@@ -36,12 +36,11 @@ public class StationAcceptanceTest {
         String stationName = "강남역";
         String inputJson = "{\"name\":\""+stationName+"\"}";
 
-        webTestClient.post().uri("/stations")
+        webTestClient.post().uri("/stationsTest")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(inputJson), String.class)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectHeader().contentType(MediaType.APPLICATION_JSON)
                 .expectHeader().exists("Location")
                 .expectBody().jsonPath("$.name").isEqualTo(stationName);
     }
@@ -56,7 +55,7 @@ public class StationAcceptanceTest {
         StationRequestDto.builder().name(stationName2).build();
 
         //when
-        StationResponseDto stationResponseDto = webTestClient.post().uri("/stations/create")
+        StationResponseDto stationResponseDto = webTestClient.post().uri("/stations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(stationRequestDto),StationRequestDto.class)
                 .exchange()
@@ -78,7 +77,7 @@ public class StationAcceptanceTest {
         createStationTest();
 
         //when
-        List<StationResponseDto> stationResponseDtoList = webTestClient.get().uri("/stations/list")
+        List<StationResponseDto> stationResponseDtoList = webTestClient.get().uri("/stations")
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -96,7 +95,7 @@ public class StationAcceptanceTest {
         //given
         Long id = 1L;
         //when
-        StationResponseDto stationResponseDto = webTestClient.get().uri("/stations/list/"+id)
+        StationResponseDto stationResponseDto = webTestClient.get().uri("/stations/"+id)
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON)
@@ -114,8 +113,7 @@ public class StationAcceptanceTest {
         //given
         Long id = 1L;
         //when
-        webTestClient.post().uri("stations/delete/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
+        webTestClient.delete().uri("stations/" + id)
                 .exchange()
                 .expectStatus().isOk();
     }

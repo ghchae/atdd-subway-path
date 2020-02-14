@@ -22,17 +22,18 @@ public class StationController {
 
     @Autowired
     private StationService stationService;
-    @PostMapping("/stations")
+
+    @PostMapping("/stationsTest")
     public @ResponseBody ResponseEntity stations(@RequestBody String inputJson) {
-        Logger logger = Logger.getLogger("station");
+        Logger logger = Logger.getLogger("stationTest");
         logger.info(inputJson);
 
-        URI location = URI.create("/stations");
+        URI location = URI.create("/stationsTest");
         return ResponseEntity.created(location)
                 .body(inputJson);
     }
 
-    @PostMapping("/stations/create")
+    @PostMapping("/stations")
     public ResponseEntity createStation(@RequestBody StationRequestDto stationRequestDto) {
         Logger logger = Logger.getLogger("createStation");
         URI location = URI.create("/stations/create");
@@ -44,7 +45,7 @@ public class StationController {
                 .body(stationResponseDto);
     }
 
-    @GetMapping("/stations/list")
+    @GetMapping("/stations")
     public ResponseEntity selectStationList(){
 
         List<StationResponseDto> stationResponseDtoList = stationService.select();
@@ -52,7 +53,7 @@ public class StationController {
         return ResponseEntity.ok().body(stationResponseDtoList);
     }
 
-    @GetMapping("/stations/list/{id}")
+    @GetMapping("/stations/{id}")
     public ResponseEntity selectStation(@PathVariable Long id) {
 
         stationService.create(StationRequestDto.builder().name("강남역").build());
@@ -62,7 +63,7 @@ public class StationController {
         return  ResponseEntity.ok().body(stationResponseDto);
     }
 
-    @PostMapping("/stations/delete/{id}")
+    @DeleteMapping("/stations/{id}")
     public void deleteStation(@PathVariable Long id) {
 
         stationService.create(StationRequestDto.builder().name("강남역").build());
